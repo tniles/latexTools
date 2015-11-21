@@ -1,0 +1,33 @@
+#!/bin/bash
+
+# script to generate all the documentation via make using latex in pdf form
+# call this script with:
+#   'all' to generate all pdfs
+#   'clean' to clean all intermediate files
+ 
+if [ $# != 1 ] ; then
+    echo "***ERROR! Incorrect Usage. Please provide 'all' or 'clean'"
+    echo "       'all'   : generates all pdfs"
+    echo "       'clean' : removes all intermediate files"
+    exit 1
+fi
+
+# intermediate directory 
+export AUXDIR="aux"
+if [ ! -e $AUXDIR ] ; then
+    mkdir $AUXDIR
+fi
+
+# output directory 
+export PDFDIR="pdf"
+if [ ! -e $PDFDIR ] ; then
+    mkdir $PDFDIR
+fi
+
+for file in `ls *.tex`; do
+    export TEXSRC="$file"
+    echo $TEXSRC
+    make -f Makefile "$1"
+done
+
+exit 0
