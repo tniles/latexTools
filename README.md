@@ -1,6 +1,10 @@
-################################ ################################
+################################ ################################ ##################
 Sample LaTeX functional environment
-################################ ################################
+
+I used LaTeX for my master's thesis and use it on an ongoing basis for my resume.
+
+################################ ################################ ##################
+
 
 If anything starts building oddly, check the *.log for errors or warnings.
 
