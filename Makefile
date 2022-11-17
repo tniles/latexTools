@@ -11,7 +11,7 @@
 # THREE WAYS TO GO FROM TEX TO PDF:
 #
 # pdflatex myfile               # TeX → PDF
-#   However, I've found pdflatex to have issues with graphics inclusion. Never bothered to debug it.
+#   Using pdflatex allows inclusion of PNGs via the graphicx package
 #
 # latex myfile                  # TeX → DVI
 # dvipdf myfile                 # DVI → PDF
@@ -30,12 +30,14 @@ finalOut: dviOut.o pdfOut.o
 
 # run twice for tables (toc, figs, bib) to build correctly
 dviOut.o:
-	latex -interaction=nonstopmode -output-directory=$(AUXDIR) $(TEXFILE) 1> /dev/null
-	latex -interaction=nonstopmode -output-directory=$(AUXDIR) $(TEXFILE) 1> /dev/null
+	pdflatex -interaction=nonstopmode -output-directory=$(AUXDIR) $(TEXFILE) 1> /dev/null
+#	latex -interaction=nonstopmode -output-directory=$(AUXDIR) $(TEXFILE) 1> /dev/null
+#	latex -interaction=nonstopmode -output-directory=$(AUXDIR) $(TEXFILE) 1> /dev/null
 
 pdfOut.o:
-	dvipdf $(AUXDIR)/$(TEXFILE:.tex=.dvi) $(PDFDIR)/$(TEXFILE:.tex=.pdf)
+	mv $(AUXDIR)/$(TEXFILE:.tex=.pdf) $(PDFDIR)
+#	dvipdf $(AUXDIR)/$(TEXFILE:.tex=.dvi) $(PDFDIR)/$(TEXFILE:.tex=.pdf)
 
 # delete all intermediate and output files
 clean:
-	$(foreach cmd, $(TEXFILE:.tex=), rm -f $(AUXDIR)/$(cmd).aux $(AUXDIR)/$(cmd).dvi $(AUXDIR)/$(cmd).lof $(AUXDIR)/$(cmd).log $(AUXDIR)/$(cmd).lot $(AUXDIR)/$(cmd).toc)
+	$(foreach cmd, $(TEXFILE:.tex=), rm -f $(AUXDIR)/$(cmd).aux $(AUXDIR)/$(cmd).dvi $(AUXDIR)/$(cmd).lof $(AUXDIR)/$(cmd).log $(AUXDIR)/$(cmd).lot $(AUXDIR)/$(cmd).out $(AUXDIR)/$(cmd).toc)
